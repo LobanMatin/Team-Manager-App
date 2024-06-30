@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "100093030515",
+    "project_id": "team-manager-app-22df9",
+    "storage_bucket": "team-manager-app-22df9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100093030515:android:8c105fa919c6952c943a06",
+        "android_client_info": {
+          "package_name": "com.example.team_manager_application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFizhWz59ZuX7SsmEKojB_U3DUQMtHWP4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

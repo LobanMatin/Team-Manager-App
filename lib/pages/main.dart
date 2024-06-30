@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:team_manager_application/assets/colours.dart';
 import 'package:team_manager_application/assets/text.dart';
 import 'package:team_manager_application/pages/login_page.dart';
+import 'package:team_manager_application/pages/singup_page.dart';
+import 'package:team_manager_application/pages/start_page.dart';
 
 void main() {
   runApp(const TeamApp());
@@ -19,8 +21,10 @@ class TeamApp extends StatelessWidget {
         useMaterial3: true,
         textTheme: appTextTheme,
       ),
-      routes: {'/login_page': (context) => const LoginPage()},
-      initialRoute: '/login_page',
+      routes: {'/start_page': (context) => const StartPage(),
+      '/login_page': (context) => const LoginPage(),
+      '/signup_page': (context) => const SingUpPage()},
+      initialRoute: '/start_page',
     );
   }
 }
