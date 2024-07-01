@@ -16,28 +16,53 @@ class _ContentPageState extends State<ContentPage> {
         backgroundColor: Colors.transparent,
       ),
       body: Center(
-        child: Column(
-          children: [
-            Text(
-              'Training Schedule',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            const Row(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(80, 10, 80, 10),
+          child: Column(
             children: [
-              Text('Date and Time'),
-              VerticalDivider(),
-              Text('Location'),
-              VerticalDivider(),
-              Text('Description')
+              Column(
+                children: [
+                  Text(
+                    'Announcements',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SingleChildScrollView(
+                    child: Column(children: [
+                      Text('Hello')
+                    ],),
+                  )
+                ],
+              ),
+              const Row(
+                children: [
+                  Column(
+                    children: [
+                      Text('Events'),
+                    ],
+                  ),
+                  Column(
+                    children: [
+                      Text('Training Schedule'),
+                      Row(
+                        children: [
+                          Text('Date and Time'),
+                          VerticalDivider(),
+                          Text('Location'),
+                          VerticalDivider(),
+                          Text('Description')
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ],
-            )
-          ],
+          ),
         ),
       ),
     );
   }
 }
-
 
 class Training {
   DateTime? time;
