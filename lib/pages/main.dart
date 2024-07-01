@@ -26,7 +26,7 @@ class TeamApp extends StatelessWidget {
       '/login_page': (context) => const LoginPage(),
       '/signup_page': (context) => const SingUpPage(),
       '/content_page': (context) => const ContentPage()},
-      initialRoute: '/content_page',
+      initialRoute: '/start_page',
     );
   }
 }
