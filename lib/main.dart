@@ -5,8 +5,16 @@ import 'package:team_manager_application/pages/content_page.dart';
 import 'package:team_manager_application/pages/login_page.dart';
 import 'package:team_manager_application/pages/singup_page.dart';
 import 'package:team_manager_application/pages/start_page.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform
+  );
+
   runApp(const TeamApp());
 }
 
