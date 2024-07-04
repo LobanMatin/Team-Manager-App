@@ -61,3 +61,4 @@ class Training {
   String? location;
   String? description;
 }
+
