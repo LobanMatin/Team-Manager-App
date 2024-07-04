@@ -1,14 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:team_manager_application/services/auth_service.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class AuthPage extends StatefulWidget {
+  final bool isLogin;
+
+  const AuthPage({super.key, required this.isLogin});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<AuthPage> createState() => _AuthPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _AuthPageState extends State<AuthPage> {
   var passwordVisible = false;
+  var activeIsPressed = false;
+  var passiveIsPressed = false;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +40,9 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Spacer(flex: 10),
-              const TextField(
-                decoration: InputDecoration(
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(
                   hintText: "Email",
                   hintStyle: TextStyle(
                     fontFamily: 'Whitney',
@@ -45,6 +53,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const Spacer(flex: 1),
               TextField(
+                controller: _passwordController,
                 obscureText: !passwordVisible,
                 decoration: InputDecoration(
                   hintText: "Password",
@@ -55,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      passwordVisible? Icons.visibility : Icons.visibility_off,
+                      passwordVisible ? Icons.visibility : Icons.visibility_off,
                       color: Theme.of(context).colorScheme.primary,
                     ),
                     onPressed: () {
@@ -68,19 +77,38 @@ class _LoginPageState extends State<LoginPage> {
               ),
               const Spacer(flex: 2),
               ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/signup_page');
+                onPressed: () async {
+                  setState(() {
+                    activeIsPressed = !activeIsPressed;
+                  });
+                  
+                  widget.isLogin
+                      ? await AuthService.logIn(
+                          context: context,
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                        )
+                      : AuthService.signUp(
+                          context: context,
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                        );
+                  setState(() {
+                    activeIsPressed = !activeIsPressed;
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size.fromHeight(buttonHeight),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(buttonHeight * 0.2),
                   ),
-                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: activeIsPressed
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : Theme.of(context).colorScheme.primary,
                 ),
                 child: FittedBox(
                   fit: BoxFit.cover,
-                  child: Text("Log in",
+                  child: Text(widget.isLogin ? "Log In" : "Sign Up",
                       style: Theme.of(context).textTheme.bodyLarge),
                 ),
               ),
@@ -103,19 +131,30 @@ class _LoginPageState extends State<LoginPage> {
               const Spacer(flex: 1),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context);
-                  Navigator.pushNamed(context, '/signup_page');
+                  setState(() {
+                    passiveIsPressed = !passiveIsPressed;
+                  });
+
+                  String nextAction =
+                      widget.isLogin ? '/signup_page' : '/login_page';
+                  Navigator.pushReplacementNamed(context, nextAction);
+
+                  setState(() {
+                    passiveIsPressed = !passiveIsPressed;
+                  });
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: Size.fromHeight(buttonHeight),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(buttonHeight * 0.2),
                   ),
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  backgroundColor: passiveIsPressed
+                      ? Theme.of(context).colorScheme.secondary
+                      : Theme.of(context).colorScheme.tertiary,
                 ),
                 child: FittedBox(
                   fit: BoxFit.cover,
-                  child: Text("Sign Up",
+                  child: Text(widget.isLogin ? "Sign Up" : "Log In",
                       style: Theme.of(context).textTheme.bodyLarge),
                 ),
               ),
