@@ -17,45 +17,37 @@ class _ContentPageState extends State<ContentPage> {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(80, 10, 80, 10),
+          padding: const EdgeInsets.fromLTRB(80, 50, 80, 50),
           child: Column(
             children: [
-              Column(
-                children: [
-                  Text(
-                    'Announcements',
-                    style: Theme.of(context).textTheme.bodyLarge,
-                  ),
-                  const SingleChildScrollView(
-                    child: Column(children: [
-                      Text('Hello')
-                    ],),
-                  )
-                ],
+              Expanded(
+                flex: 2,
+                child: Container(
+                  color: Colors.red,
+                  child: const Placeholder(),
+                ),
               ),
-              const Row(
-                children: [
-                  Column(
+              Expanded(
+                flex: 3,
+                child: Row(
                     children: [
-                      Text('Events'),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Text('Training Schedule'),
-                      Row(
-                        children: [
-                          Text('Date and Time'),
-                          VerticalDivider(),
-                          Text('Location'),
-                          VerticalDivider(),
-                          Text('Description')
-                        ],
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          color: Colors.blue,
+                          child: const Placeholder(),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          color: Colors.yellow,
+                          child: const Placeholder(),
+                        ),
                       ),
                     ],
                   ),
-                ],
-              ),
+              )
             ],
           ),
         ),

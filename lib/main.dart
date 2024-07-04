@@ -33,7 +33,7 @@ class TeamApp extends StatelessWidget {
       '/login_page': (context) => const AuthPage(isLogin: true,),
       '/signup_page': (context) => const AuthPage(isLogin: false,),
       '/content_page': (context) => const ContentPage()},
-      initialRoute: '/start_page',
+      initialRoute: '/content_page',
     );
   }
 }
