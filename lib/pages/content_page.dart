@@ -1,3 +1,4 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class ContentPage extends StatefulWidget {
@@ -8,8 +9,15 @@ class ContentPage extends StatefulWidget {
 }
 
 class _ContentPageState extends State<ContentPage> {
+  final _database = FirebaseDatabase.instance.ref();
+
   @override
   Widget build(BuildContext context) {
+
+    final trainings = _database.child('trainings/').onValue.listen(e) {
+      final String description = e.snapshot.value;
+    }
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.tertiary,
       appBar: AppBar(
