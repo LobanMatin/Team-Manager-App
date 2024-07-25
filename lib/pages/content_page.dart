@@ -87,24 +87,8 @@ class _ContentPageState extends State<ContentPage> {
                           Padding(
                             padding: const EdgeInsets.fromLTRB(8, 20, 8, 20),
                             child: trainingWidget(trainingList[i]),
-                          )
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 3,
-                child: Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        color: Colors.transparent,
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              Text(
+                          ),
+                          Text(
                                 "Tips & Resources",
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
@@ -124,31 +108,30 @@ class _ContentPageState extends State<ContentPage> {
                               ),
                               for (var key in poomsae.keys)
                                 Padding(
-                                    padding:
-                                        const EdgeInsets.fromLTRB(8, 20, 8, 20),
-                                    child: Column(
-                                      children: [
-                                        Text(key.toString()),
-                                        YoutubePlayer(
-                                          controller: _controllerList[key.toString()]!,
-                                        ),
-                                      ],
-                                    )),
+                                  padding:
+                                      const EdgeInsets.fromLTRB(8, 20, 8, 20),
+                                  child: Column(
+                                    children: [
+                                      Text(key.toString()),
+                                      YoutubePlayer(
+                                        controller:
+                                            _controllerList[key.toString()]!,
+                                      ),
+                                    ],
+                                  ),
+                                ),
                               Text(
                                 "Helpful Tip",
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                               Text(
                                 randomTip,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
+                              ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),
