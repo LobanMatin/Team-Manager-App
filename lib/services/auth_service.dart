@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthService {
@@ -68,6 +69,48 @@ class AuthService {
     await Future.delayed(const Duration(seconds: 1));
 
     Navigator.pushReplacementNamed(context, '/start_page');
+  }
+
+  static Future<void> forgotPassword({required BuildContext context}) async {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text("Forgot Password"),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Text(
+                "Please enter your email address to be sent a verification email."),
+            TextField(
+              cursorColor: Theme.of(context).colorScheme.onSecondary,
+              autofocus: true,
+              decoration: InputDecoration(
+                hintText: "account email",
+                enabledBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.onSecondary),
+                ),
+                focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.onSecondary),
+                ),
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            child: Text(
+              "Submit",
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      ),
+    );
   }
 
   static bool hasUser() {

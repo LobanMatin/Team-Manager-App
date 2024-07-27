@@ -75,13 +75,22 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                 ),
               ),
+              TextButton(
+                child: Text(
+                  "Forgot your password?",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                onPressed: () {
+                  AuthService.forgotPassword(context: context);
+                },
+              ),
               const Spacer(flex: 2),
               ElevatedButton(
                 onPressed: () async {
                   setState(() {
                     activeIsPressed = !activeIsPressed;
                   });
-                  
+
                   widget.isLogin
                       ? await AuthService.logIn(
                           context: context,
