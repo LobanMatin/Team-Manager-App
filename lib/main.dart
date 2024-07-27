@@ -5,6 +5,7 @@ import 'package:team_manager_application/pages/content_page.dart';
 import 'package:team_manager_application/pages/auth_page.dart';
 import 'package:team_manager_application/pages/start_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:team_manager_application/services/auth_service.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
@@ -33,7 +34,7 @@ class TeamApp extends StatelessWidget {
       '/login_page': (context) => const AuthPage(isLogin: true,),
       '/signup_page': (context) => const AuthPage(isLogin: false,),
       '/content_page': (context) => const ContentPage()},
-      initialRoute: '/start_page',
+      initialRoute: AuthService.hasUser() ? '/content_page' : '/start_page',
     );
   }
 }
