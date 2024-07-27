@@ -22,7 +22,7 @@ class _ContentPageState extends State<ContentPage> {
   String randomTip = "";
   final beltLevel = 'black'; // make this user dependent
 
-  late Map<dynamic, YoutubePlayerController> _controllerList = {};
+  late final Map<dynamic, YoutubePlayerController> _controllerList = {};
 
   @override
   void initState() {
