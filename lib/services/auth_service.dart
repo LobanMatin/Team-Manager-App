@@ -1,20 +1,54 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class AuthService {
-  static Future<void> signUp(
-      {required BuildContext context,
-      required String email,
-      required String password}) async {
+  static Future<void> signUp({
+    required BuildContext context,
+    required String email,
+    required String password,
+    required String confirmPassword,
+    required String name,
+    required String? belt,
+  }) async {
     try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      
+      if (FirebaseAuth.instance.currentUser != null) {
+        if (email == '' ||
+            password == '' ||
+            confirmPassword == '' ||
+            name == '' ||
+            belt == null) {
+          throw InvalidSignUpException('Please fill in all fields', email,
+              password, confirmPassword, name, belt.toString());
+        } else if (password != confirmPassword) {
+          throw InvalidSignUpException("Confirm password does not match", email,
+              password, confirmPassword, name, belt);
+        }
 
-      await Future.delayed(const Duration(seconds: 1));
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/content_page', (Route route) => false);
+        await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+        
+        String id = FirebaseAuth.instance.currentUser!.uid;
+        DatabaseReference dbRef = FirebaseDatabase.instance.ref("users/$id");
+        await dbRef.set(
+          {
+            "name": name,
+            "belt": belt,
+            "admin": false,
+          },
+        );
+
+        if (!FirebaseAuth.instance.currentUser!.emailVerified) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, '/verify_page', (Route route) => false);
+        } else {
+          await Future.delayed(const Duration(seconds: 1));
+          Navigator.pushNamedAndRemoveUntil(
+              context, '/content_page', (Route route) => false);
+        }
+      }
     } on FirebaseAuthException catch (e) {
       String message = '';
       if (e.code == 'weak-password') {
@@ -25,6 +59,15 @@ class AuthService {
 
       Fluttertoast.showToast(
         msg: message,
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.SNACKBAR,
+        backgroundColor: Colors.black54,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+    } on InvalidSignUpException catch (e) {
+      Fluttertoast.showToast(
+        msg: e.message,
         toastLength: Toast.LENGTH_LONG,
         gravity: ToastGravity.SNACKBAR,
         backgroundColor: Colors.black54,
@@ -42,9 +85,14 @@ class AuthService {
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
 
-      await Future.delayed(const Duration(seconds: 1));
-      Navigator.pushNamedAndRemoveUntil(
-          context, '/content_page', (Route route) => false);
+      if (!FirebaseAuth.instance.currentUser!.emailVerified) {
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/verify_page', (Route route) => false);
+      } else {
+        await Future.delayed(const Duration(seconds: 1));
+        Navigator.pushNamedAndRemoveUntil(
+            context, '/content_page', (Route route) => false);
+      }
     } on FirebaseAuthException catch (e) {
       String message = '';
       if (e.code == 'user-not-found') {
@@ -65,10 +113,19 @@ class AuthService {
   }
 
   static Future<void> signOut({required BuildContext context}) async {
+    await Navigator.pushNamedAndRemoveUntil(
+        context, '/start_page', ModalRoute.withName('/'));
     await FirebaseAuth.instance.signOut();
     await Future.delayed(const Duration(seconds: 1));
+  }
 
-    Navigator.pushReplacementNamed(context, '/start_page');
+  static Future<bool> emailVerified() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      return user.emailVerified;
+    } else {
+      return false;
+    }
   }
 
   static Future<void> forgotPassword({required BuildContext context}) async {
@@ -117,4 +174,26 @@ class AuthService {
     User? user = FirebaseAuth.instance.currentUser;
     return user != null;
   }
+}
+
+class InvalidSignUpException implements Exception {
+  final String message;
+  final String email;
+  final String password;
+  final String confirmPassword;
+  final String name;
+  final String belt;
+
+  InvalidSignUpException(
+    this.message,
+    this.email,
+    this.password,
+    this.confirmPassword,
+    this.name,
+    this.belt,
+  );
+
+  @override
+  String toString() =>
+      "InvalidSignUpException{email: $email, password: $password, confirm password: $confirmPassword, name: $name, belt: $belt}";
 }

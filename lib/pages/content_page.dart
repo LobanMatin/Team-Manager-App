@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:team_manager_application/models/training_model.dart';
@@ -15,12 +16,13 @@ class ContentPage extends StatefulWidget {
 
 class _ContentPageState extends State<ContentPage> {
   DatabaseReference dbRef = FirebaseDatabase.instance.ref();
+  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   List<TrainingInstance> trainingList = [];
   List<String> terminology = [];
   Map<dynamic, dynamic> poomsae = {};
   String randomTip = "";
-  final beltLevel = 'black'; // make this user dependent
+  String beltLevel = ""; 
 
   late final Map<dynamic, YoutubePlayerController> _controllerList = {};
 
@@ -66,7 +68,7 @@ class _ContentPageState extends State<ContentPage> {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(80, 50, 80, 50),
+          padding: const EdgeInsets.fromLTRB(5, 15, 5, 15),
           child: Column(
             children: [
               Expanded(
@@ -174,6 +176,7 @@ class _ContentPageState extends State<ContentPage> {
   }
 
   Future<void> retrieveResourceData() async {
+    beltLevel = (await dbRef.child("users/$uid/belt").get()).value as String;
     final resourceData =
         (await dbRef.child("resources/$beltLevel").get()).value as Map;
     final tipsData = (await dbRef.child("tips").get()).value as Map;
