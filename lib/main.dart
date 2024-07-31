@@ -30,7 +30,6 @@ class TeamApp extends StatelessWidget {
         useMaterial3: true,
         textTheme: appTextTheme,
       ),
-<<<<<<< HEAD
       routes: {
         '/start_page': (context) => const StartPage(),
         '/login_page': (context) => const AuthPage(
@@ -47,13 +46,6 @@ class TeamApp extends StatelessWidget {
               ? '/content_page'
               : '/verify_page')
           : '/start_page',
-=======
-      routes: {'/start_page': (context) => const StartPage(),
-      '/login_page': (context) => const AuthPage(isLogin: true,),
-      '/signup_page': (context) => const AuthPage(isLogin: false,),
-      '/content_page': (context) => const ContentPage()},
-      initialRoute: '/content_page',
->>>>>>> 4ebeb33281a26d5fd094e83f8a54d2a38ab91922
     );
   }
 }
