@@ -54,7 +54,6 @@ class _VerifyPageState extends State<VerifyPage> {
       setState(() => canResendEmail = false);
       await Future.delayed(const Duration(seconds: 3));
       setState(() => canResendEmail = true);
-      //TODO: Add error handling
     }
   }
 
