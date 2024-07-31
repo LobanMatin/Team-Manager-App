@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 import 'dart:math';
 
+import 'package:firebase_auth/firebase_auth.dart';
+=======
+>>>>>>> 4ebeb33281a26d5fd094e83f8a54d2a38ab91922
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:team_manager_application/models/training_model.dart';
@@ -14,13 +18,15 @@ class ContentPage extends StatefulWidget {
 }
 
 class _ContentPageState extends State<ContentPage> {
+<<<<<<< HEAD
   DatabaseReference dbRef = FirebaseDatabase.instance.ref();
+  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   List<TrainingInstance> trainingList = [];
   List<String> terminology = [];
   Map<dynamic, dynamic> poomsae = {};
   String randomTip = "";
-  final beltLevel = 'black'; // make this user dependent
+  String beltLevel = ""; 
 
   late final Map<dynamic, YoutubePlayerController> _controllerList = {};
 
@@ -31,9 +37,17 @@ class _ContentPageState extends State<ContentPage> {
     retrieveTrainingData();
     retrieveResourceData();
   }
+=======
+  final _database = FirebaseDatabase.instance.ref();
+>>>>>>> 4ebeb33281a26d5fd094e83f8a54d2a38ab91922
 
   @override
   Widget build(BuildContext context) {
+
+    final trainings = _database.child('trainings/').onValue.listen(e) {
+      final String description = e.snapshot.value;
+    }
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.tertiary,
       appBar: AppBar(
@@ -66,12 +80,17 @@ class _ContentPageState extends State<ContentPage> {
       ),
       body: Center(
         child: Padding(
+<<<<<<< HEAD
+          padding: const EdgeInsets.fromLTRB(5, 15, 5, 15),
+=======
           padding: const EdgeInsets.fromLTRB(80, 50, 80, 50),
+>>>>>>> 4ebeb33281a26d5fd094e83f8a54d2a38ab91922
           child: Column(
             children: [
               Expanded(
                 flex: 2,
                 child: Container(
+<<<<<<< HEAD
                   color: Colors.transparent,
                   child: SingleChildScrollView(
                     child: Column(
@@ -132,6 +151,33 @@ class _ContentPageState extends State<ContentPage> {
                   ),
                 ),
               ),
+=======
+                  color: Colors.red,
+                  child: const Placeholder(),
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Row(
+                    children: [
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          color: Colors.blue,
+                          child: const Placeholder(),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 1,
+                        child: Container(
+                          color: Colors.yellow,
+                          child: const Placeholder(),
+                        ),
+                      ),
+                    ],
+                  ),
+              )
+>>>>>>> 4ebeb33281a26d5fd094e83f8a54d2a38ab91922
             ],
           ),
         ),
@@ -174,6 +220,7 @@ class _ContentPageState extends State<ContentPage> {
   }
 
   Future<void> retrieveResourceData() async {
+    beltLevel = (await dbRef.child("users/$uid/belt").get()).value as String;
     final resourceData =
         (await dbRef.child("resources/$beltLevel").get()).value as Map;
     final tipsData = (await dbRef.child("tips").get()).value as Map;
@@ -200,3 +247,4 @@ class _ContentPageState extends State<ContentPage> {
     setState(() {});
   }
 }
+

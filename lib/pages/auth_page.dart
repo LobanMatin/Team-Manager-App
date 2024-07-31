@@ -11,11 +11,23 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
+  final TextStyle textFieldStyle = const TextStyle(
+    fontFamily: 'Whitney',
+    fontSize: 16,
+    color: Color.fromRGBO(255, 255, 255, 0.3),
+  );
+
   var passwordVisible = false;
+  var passwordConfirmVisible = false;
   var activeIsPressed = false;
   var passiveIsPressed = false;
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _passwordConfirmController = TextEditingController();
+
+  List<String> beltSelection = ["white", "yellow", "blue", "red", "black"];
+  String? selectedBelt;
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +37,7 @@ class _AuthPageState extends State<AuthPage> {
       backgroundColor: Theme.of(context).colorScheme.tertiary,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text('Sign In'),
+        title: widget.isLogin ? const Text('Log In') : const Text("Sign Up"),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
@@ -40,15 +52,21 @@ class _AuthPageState extends State<AuthPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               const Spacer(flex: 10),
+              !widget.isLogin
+                  ? TextField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        hintText: "Name",
+                        hintStyle: textFieldStyle,
+                      ),
+                    )
+                  : Container(),
+              !widget.isLogin ? const Spacer(flex: 1) : Container(),
               TextField(
                 controller: _emailController,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   hintText: "Email",
-                  hintStyle: TextStyle(
-                    fontFamily: 'Whitney',
-                    fontSize: 25,
-                    color: Color.fromRGBO(255, 255, 255, 0.3),
-                  ),
+                  hintStyle: textFieldStyle,
                 ),
               ),
               const Spacer(flex: 1),
@@ -57,11 +75,7 @@ class _AuthPageState extends State<AuthPage> {
                 obscureText: !passwordVisible,
                 decoration: InputDecoration(
                   hintText: "Password",
-                  hintStyle: const TextStyle(
-                    fontFamily: 'Whitney',
-                    fontSize: 25,
-                    color: Color.fromRGBO(255, 255, 255, 0.3),
-                  ),
+                  hintStyle: textFieldStyle,
                   suffixIcon: IconButton(
                     icon: Icon(
                       passwordVisible ? Icons.visibility : Icons.visibility_off,
@@ -75,23 +89,87 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                 ),
               ),
+              !widget.isLogin ? const Spacer(flex: 1) : Container(),
+              !widget.isLogin
+                  ? TextField(
+                      controller: _passwordConfirmController,
+                      obscureText: !passwordConfirmVisible,
+                      decoration: InputDecoration(
+                        hintText: "Confirm Password",
+                        hintStyle: textFieldStyle,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            passwordConfirmVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              passwordConfirmVisible = !passwordConfirmVisible;
+                            });
+                          },
+                        ),
+                      ),
+                    )
+                  : Container(),
+              !widget.isLogin ? const Spacer(flex: 1) : Container(),
+              !widget.isLogin
+                  ? SizedBox(
+                      width: double.infinity,
+                      child: DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                          hintText: "Belt Level",
+                          hintStyle: textFieldStyle,
+                        ),
+                        value: null,
+                        items: beltSelection
+                            .map((item) => DropdownMenuItem<String>(
+                                  value: item,
+                                  child: FittedBox(
+                                    child: Text(
+                                      item,
+                                      style:
+                                          Theme.of(context).textTheme.bodyLarge,
+                                    ),
+                                  ),
+                                ))
+                            .toList(),
+                        onChanged: (item) =>
+                            setState(() => selectedBelt = item),
+                      ),
+                    )
+                  : Container(),
+              const Spacer(flex: 1),
+              TextButton(
+                child: Text(
+                  "Forgot your password?",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                onPressed: () {
+                  AuthService.forgotPassword(context: context);
+                },
+              ),
               const Spacer(flex: 2),
               ElevatedButton(
                 onPressed: () async {
                   setState(() {
                     activeIsPressed = !activeIsPressed;
                   });
-                  
+
                   widget.isLogin
                       ? await AuthService.logIn(
                           context: context,
-                          email: _emailController.text,
-                          password: _passwordController.text,
+                          email: _emailController.text.trim(),
+                          password: _passwordController.text.trim(),
                         )
                       : AuthService.signUp(
+                          name: _nameController.text.trim(),
+                          belt: selectedBelt,
                           context: context,
-                          email: _emailController.text,
-                          password: _passwordController.text,
+                          email: _emailController.text.trim(),
+                          password: _passwordController.text.trim(),
+                          confirmPassword: _passwordConfirmController.text.trim(),
                         );
                   setState(() {
                     activeIsPressed = !activeIsPressed;
