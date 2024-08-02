@@ -17,7 +17,7 @@ class _StartPageState extends State<StartPage> {
       backgroundColor: Theme.of(context).colorScheme.tertiary,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: const Text("TeamApp"),
+        title: const Text("MUTKD APP"),
       ),
       body: Center(
         child: Padding(

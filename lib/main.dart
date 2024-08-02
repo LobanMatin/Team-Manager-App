@@ -24,7 +24,7 @@ class TeamApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'MUTKD APP',
       theme: ThemeData(
         colorScheme: appColourScheme,
         useMaterial3: true,
