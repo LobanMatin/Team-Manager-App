@@ -188,7 +188,8 @@ class _AuthPageState extends State<AuthPage> {
               const Spacer(flex: 1),
 
               // Add text button to send password reset email
-              TextButton(
+              widget.isLogin
+              ? TextButton(
                 child: Text(
                   "Forgot your password?",
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -198,7 +199,7 @@ class _AuthPageState extends State<AuthPage> {
                 onPressed: () {
                   AuthService.forgotPassword(context: context);
                 },
-              ),
+              ) : Container(),
               const Spacer(flex: 2),
 
 
@@ -270,7 +271,7 @@ class _AuthPageState extends State<AuthPage> {
                 ],
               ),
 
-              // // Active button, sign up if page is for login and vice versa
+              // // Passive button, sign up if page is for login and vice versa
               const Spacer(flex: 1),
               ElevatedButton(
                 onPressed: () {
