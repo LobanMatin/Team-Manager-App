@@ -13,7 +13,6 @@ class AuthService {
     required String? belt,
   }) async {
     try {
-      
       if (FirebaseAuth.instance.currentUser != null) {
         if (email == '' ||
             password == '' ||
@@ -28,8 +27,8 @@ class AuthService {
         }
 
         await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
-        
+            .createUserWithEmailAndPassword(email: email, password: password);
+
         String id = FirebaseAuth.instance.currentUser!.uid;
         DatabaseReference dbRef = FirebaseDatabase.instance.ref("users/$id");
         await dbRef.set(
@@ -129,6 +128,8 @@ class AuthService {
   }
 
   static Future<void> forgotPassword({required BuildContext context}) async {
+    final emailController = TextEditingController();
+
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -139,6 +140,7 @@ class AuthService {
             const Text(
                 "Please enter your email address to be sent a verification email."),
             TextField(
+              controller: emailController,
               cursorColor: Theme.of(context).colorScheme.onSecondary,
               autofocus: true,
               decoration: InputDecoration(
@@ -161,8 +163,30 @@ class AuthService {
               "Submit",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            onPressed: () {
-              Navigator.of(context).pop();
+            onPressed: () async {
+              try {
+                await FirebaseAuth.instance
+                    .sendPasswordResetEmail(email: emailController.text.trim());
+                Navigator.of(context).pop();
+
+                Fluttertoast.showToast(
+                  msg: "Verification Email Sent if Account Exists",
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.SNACKBAR,
+                  backgroundColor: Colors.black54,
+                  textColor: Colors.white,
+                  fontSize: 14.0,
+                );
+              } on FirebaseAuthException catch (e) {
+                Fluttertoast.showToast(
+                  msg: e.code,
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.SNACKBAR,
+                  backgroundColor: Colors.black54,
+                  textColor: Colors.white,
+                  fontSize: 14.0,
+                );
+              }
             },
           ),
         ],
