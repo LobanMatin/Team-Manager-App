@@ -1,16 +1,9 @@
-# team_manager_application
+# Melbourne University Taekwondo Club (MUTKD), Member Application
+Flutter App intended for android devices. Made for all members of MUTKD. The application utilises a secure Firebase authentication back end to sign-up and log-in users.
+It also uses a realtime database to store up-to-date training information as well as helpful resources and tips for members to take advantage of.
 
-A new Flutter project.
+## Current Stage
+The app has finished development and awaiting being published on the play store.
+Currently privacy and security concerns are being addressed before being made availiable on the play store.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Showcase
