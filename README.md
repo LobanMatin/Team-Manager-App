@@ -9,4 +9,4 @@ Currently privacy and security concerns are being addressed before being made av
 ## Showcase
 Demonstration of the current application version:
 
-https://www.youtube.com/watch?v=1Pu4G88L4gs&ab_channel=LobanMatin
+[![Application demo](https://img.youtube.com/vi/1Pu4G88L4gs/0.jpg)](https://www.youtube.com/watch?v=1Pu4G88L4gs)
